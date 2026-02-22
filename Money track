@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Price Encoder</title>
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --accent: #38bdf8; --text: #f8fafc; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .card { background: var(--card); padding: 25px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); width: 100%; max-width: 380px; border: 1px solid #334155; }
+        h2 { text-align: center; margin-bottom: 25px; color: var(--accent); letter-spacing: 1px; }
+        label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: #94a3b8; }
+        input { width: 100%; padding: 16px; margin-bottom: 20px; border-radius: 12px; border: 2px solid #334155; background: #0f172a; color: white; font-size: 1.2rem; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--accent); }
+        .divider { height: 1px; background: #334155; margin: 10px 0 25px 0; }
+        .result-box { background: #0f172a; padding: 20px; border-radius: 16px; text-align: center; margin-top: 10px; }
+        .price-label { font-size: 0.75rem; text-transform: uppercase; color: #64748b; margin-bottom: 5px; }
+        .price-val { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
+        .secret-val { font-size: 2.8rem; font-weight: 900; color: var(--accent); letter-spacing: 6px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Shop Calculator</h2>
+        <label>Cost Price</label>
+        <input type="number" id="cost" placeholder="0.00" inputmode="decimal" oninput="calculate()">
+        <label>Profit Margin (%)</label>
+        <input type="number" id="margin" value="20" inputmode="numeric" oninput="calculate()">
+        <div class="divider"></div>
+        <div class="result-box">
+            <div class="price-label">Selling Price</div>
+            <div class="price-val" id="sellPrice">0.00</div>
+            <div class="price-label">Secret Tag Code</div>
+            <div class="secret-val" id="secretCode">----</div>
+        </div>
+    </div>
+    <script>
+        const key = { '1':'M', '2':'O', '3':'N', '4':'E', '5':'Y', '6':'T', '7':'R', '8':'A', '9':'C', '0':'K', '.':'.' };
+        function calculate() {
+            const cost = parseFloat(document.getElementById('cost').value) || 0;
+            const margin = parseFloat(document.getElementById('margin').value) || 0;
+            const finalPrice = cost + (cost * (margin / 100));
+            const strPrice = finalPrice.toFixed(2);
+            document.getElementById('sellPrice').innerText = strPrice;
+            let encoded = "";
+            for (let char of strPrice) {
+                encoded += key[char] || char;
+            }
+            document.getElementById('secretCode').innerText = encoded;
+        }
+    </script>
+</body>
+</html>
